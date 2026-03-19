@@ -6,39 +6,81 @@
 
     <style>
         body {
-            font-family: Arial;
-            background-color: #f2f6fc;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #fce4ec);
             text-align: center;
-            margin-top: 50px;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            background: white;
-            padding: 25px;
-            width: 300px;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px gray;
+            background: #ffffffcc;
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            width: 320px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #444;
+            margin-bottom: 20px;
         }
 
         input {
             width: 90%;
-            padding: 8px;
+            padding: 10px;
             margin: 8px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #90caf9;
+            box-shadow: 0px 0px 5px #90caf9;
         }
 
         button {
-            padding: 10px;
+            padding: 12px;
             width: 100%;
-            background-color: blue;
-            color: white;
+            border-radius: 10px;
             border: none;
+            background: linear-gradient(135deg, #64b5f6, #ba68c8);
+            color: white;
+            font-size: 16px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         button:hover {
-            background-color: darkblue;
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #42a5f5, #ab47bc);
         }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .safe {
+            color: #2e7d32;
+        }
+
+        .risk {
+            color: #c62828;
+        }
+
     </style>
 </head>
 
@@ -46,21 +88,15 @@
 
     <div class="container">
 
-        <h2>Loan Default Prediction</h2>
+        <h2>💳 Loan Risk Predictor</h2>
 
-        <!-- INPUTS -->
         <input type="number" id="age" placeholder="Enter Age">
-
         <input type="number" id="income" placeholder="Enter Income">
-
         <input type="number" id="loanamount" placeholder="Loan Amount">
-
         <input type="number" id="creditscore" placeholder="Credit Score">
 
-        <!-- BUTTON -->
         <button onclick="predict()">Predict</button>
 
-        <!-- RESULT -->
         <h3 id="result"></h3>
 
     </div>
@@ -68,19 +104,16 @@
     <script>
         async function predict() {
 
-            // GET VALUES
             let age = document.getElementById("age").value;
             let income = document.getElementById("income").value;
             let loanamount = document.getElementById("loanamount").value;
             let creditscore = document.getElementById("creditscore").value;
 
-            // VALIDATION
             if (!age || !income || !loanamount || !creditscore) {
                 alert("Please fill all fields");
                 return;
             }
 
-            // CREATE DATA
             let data = {
                 age: Number(age),
                 income: Number(income),
@@ -89,7 +122,6 @@
             };
 
             try {
-                // SEND REQUEST
                 let response = await fetch("https://loan-api-fltv.onrender.com/predict", {
                     method: "POST",
                     headers: {
@@ -100,12 +132,18 @@
 
                 let result = await response.json();
 
-                // SHOW RESULT
-                document.getElementById("result").innerText =
-                    result.prediction == 1 ? "⚠️ High Risk (Default)" : "✅ Low Risk (Safe)";
+                let resultText = document.getElementById("result");
+
+                if (result.prediction == 1) {
+                    resultText.innerText = "⚠️ High Risk (Default)";
+                    resultText.className = "risk";
+                } else {
+                    resultText.innerText = "✅ Low Risk (Safe)";
+                    resultText.className = "safe";
+                }
 
             } catch (error) {
-                document.getElementById("result").innerText = "Error connecting to server";
+                document.getElementById("result").innerText = "Server Error";
             }
         }
     </script>
