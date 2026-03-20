@@ -1,152 +1,213 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Loan Default Prediction</title>
+<meta charset="UTF-8">
+<title>Loan Risk Predictor</title>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #e3f2fd, #fce4ec);
-            text-align: center;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<!-- Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-        .container {
-            background: #ffffffcc;
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            width: 320px;
-            border-radius: 20px;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-        }
+<style>
 
-        .container:hover {
-            transform: translateY(-5px);
-        }
+/* BACKGROUND */
+body {
+margin:0;
+font-family:Poppins, sans-serif;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 
-        h2 {
-            color: #444;
-            margin-bottom: 20px;
-        }
+background: linear-gradient(135deg,#667eea,#764ba2,#ff758c);
+background-size:300% 300%;
+animation:bg 10s infinite;
+}
 
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 8px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            outline: none;
-            transition: 0.2s;
-        }
+@keyframes bg {
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
 
-        input:focus {
-            border-color: #90caf9;
-            box-shadow: 0px 0px 5px #90caf9;
-        }
+/* CARD */
+.card {
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:20px;
+width:320px;
+text-align:center;
+box-shadow:0 8px 32px rgba(0,0,0,0.3);
+color:white;
+}
 
-        button {
-            padding: 12px;
-            width: 100%;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, #64b5f6, #ba68c8);
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* INPUT */
+.input-group {
+text-align:left;
+margin-bottom:10px;
+}
 
-        button:hover {
-            transform: scale(1.05);
-            background: linear-gradient(135deg, #42a5f5, #ab47bc);
-        }
+.input-group label {
+font-size:12px;
+color:#ddd;
+margin-left:5px;
+}
 
-        #result {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
+.input-box {
+display:flex;
+align-items:center;
+background:white;
+border-radius:10px;
+margin:5px 0;
+padding:10px;
+}
 
-        .safe {
-            color: #2e7d32;
-        }
+.input-box i {
+margin-right:10px;
+color:#555;
+}
 
-        .risk {
-            color: #c62828;
-        }
+.input-box input {
+border:none;
+outline:none;
+width:100%;
+}
 
-    </style>
+/* BUTTON */
+button {
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:linear-gradient(45deg,#00c6ff,#0072ff);
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover {
+transform:scale(1.05);
+background:linear-gradient(45deg,#ff758c,#ff7eb3);
+}
+
+/* RESULT */
+#result {
+margin-top:15px;
+font-size:18px;
+font-weight:bold;
+}
+
+.safe { color:#00ffcc; }
+.risky { color:#ff4d4d; }
+
+/* LOADER */
+.loader {
+border:4px solid #f3f3f3;
+border-top:4px solid #00c6ff;
+border-radius:50%;
+width:25px;
+height:25px;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin {
+100%{transform:rotate(360deg);}
+}
+
+</style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="card">
 
-        <h2>💳 Loan Risk Predictor</h2>
+<h2>💳 Loan Risk Predictor</h2>
 
-        <input type="number" id="age" placeholder="Enter Age">
-        <input type="number" id="income" placeholder="Enter Income">
-        <input type="number" id="loanamount" placeholder="Loan Amount">
-        <input type="number" id="creditscore" placeholder="Credit Score">
+<div class="input-group">
+<label>Age</label>
+<div class="input-box">
+<i class="fa fa-user"></i>
+<input id="age" type="number">
+</div>
+</div>
 
-        <button onclick="predict()">Predict</button>
+<div class="input-group">
+<label>Income</label>
+<div class="input-box">
+<i class="fa fa-dollar-sign"></i>
+<input id="income" type="number">
+</div>
+</div>
 
-        <h3 id="result"></h3>
+<div class="input-group">
+<label>Loan Amount</label>
+<div class="input-box">
+<i class="fa fa-money-bill"></i>
+<input id="loan" type="number">
+</div>
+</div>
 
-    </div>
+<div class="input-group">
+<label>Credit Score</label>
+<div class="input-box">
+<i class="fa fa-chart-line"></i>
+<input id="score" type="number">
+</div>
+</div>
 
-    <script>
-        async function predict() {
+<button onclick="predict()">Predict</button>
 
-            let age = document.getElementById("age").value;
-            let income = document.getElementById("income").value;
-            let loanamount = document.getElementById("loanamount").value;
-            let creditscore = document.getElementById("creditscore").value;
+<p id="result"></p>
 
-            if (!age || !income || !loanamount || !creditscore) {
-                alert("Please fill all fields");
-                return;
-            }
+</div>
 
-            let data = {
-                age: Number(age),
-                income: Number(income),
-                loanamount: Number(loanamount),
-                creditscore: Number(creditscore)
-            };
+<script>
 
-            try {
-                let response = await fetch("https://loan-api-fltv.onrender.com/predict", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                });
+async function predict() {
 
-                let result = await response.json();
+const result = document.getElementById("result");
 
-                let resultText = document.getElementById("result");
+// Loader
+result.innerHTML = '<div class="loader"></div>';
 
-                if (result.prediction == 1) {
-                    resultText.innerText = "⚠️ High Risk (Default)";
-                    resultText.className = "risk";
-                } else {
-                    resultText.innerText = "✅ Low Risk (Safe)";
-                    resultText.className = "safe";
-                }
+let data = {
+age: Number(document.getElementById("age").value),
+income: Number(document.getElementById("income").value),
+loanamount: Number(document.getElementById("loan").value),
+creditscore: Number(document.getElementById("score").value)
+};
 
-            } catch (error) {
-                document.getElementById("result").innerText = "Server Error";
-            }
-        }
-    </script>
+try {
+
+let response = await fetch("https://loan-api-fltv.onrender.com/predict", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify(data)
+});
+
+let res = await response.json();
+
+// RESULT DISPLAY
+if(res.prediction === 0){
+result.innerHTML = "✔ Low Risk (Safe)";
+result.className = "safe";
+}
+else{
+result.innerHTML = "❌ High Risk (Risky)";
+result.className = "risky";
+}
+
+} catch(error) {
+result.innerHTML = "Server Error";
+}
+
+}
+
+</script>
 
 </body>
 </html>
