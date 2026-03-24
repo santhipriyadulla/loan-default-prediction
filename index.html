@@ -34,7 +34,7 @@ background:rgba(255,255,255,0.15);
 backdrop-filter:blur(15px);
 padding:30px;
 border-radius:20px;
-width:330px;
+width:320px;
 text-align:center;
 box-shadow:0 8px 32px rgba(0,0,0,0.3);
 color:white;
@@ -70,15 +70,6 @@ color:#555;
 border:none;
 outline:none;
 width:100%;
-}
-
-/* EXAMPLES */
-.examples{
-font-size:11px;
-color:#eee;
-margin-top:10px;
-text-align:left;
-line-height:1.5;
 }
 
 /* BUTTON */
@@ -137,7 +128,7 @@ margin:auto;
 <label>Age</label>
 <div class="input-box">
 <i class="fa fa-user"></i>
-<input id="age" type="number">
+<input id="age" type="number" placeholder="Example: 22">
 </div>
 </div>
 
@@ -145,7 +136,7 @@ margin:auto;
 <label>Income</label>
 <div class="input-box">
 <i class="fa fa-dollar-sign"></i>
-<input id="income" type="number">
+<input id="income" type="number" placeholder="Example: 20000">
 </div>
 </div>
 
@@ -153,7 +144,7 @@ margin:auto;
 <label>Loan Amount</label>
 <div class="input-box">
 <i class="fa fa-money-bill"></i>
-<input id="loan" type="number">
+<input id="loan" type="number" placeholder="Example: 40000">
 </div>
 </div>
 
@@ -161,26 +152,13 @@ margin:auto;
 <label>Credit Score</label>
 <div class="input-box">
 <i class="fa fa-chart-line"></i>
-<input id="score" type="number">
+<input id="score" type="number" placeholder="Example: 450">
 </div>
 </div>
 
 <button onclick="predict()">Predict</button>
 
 <p id="result"></p>
-
-<!-- TEXTBOOK EXAMPLES -->
-<div class="examples">
-
-<b>Example Inputs:</b><br>
-
-Low Risk Example<br>
-Age: 35 | Income: 80000 | Loan: 15000 | Credit Score: 750<br><br>
-
-High Risk Example<br>
-Age: 22 | Income: 20000 | Loan: 40000 | Credit Score: 450
-
-</div>
 
 </div>
 
@@ -195,7 +173,6 @@ async function predict() {
 
 const result = document.getElementById("result");
 
-// Loader
 result.innerHTML = '<div class="loader"></div>';
 
 let age = document.getElementById("age").value;
@@ -233,13 +210,11 @@ result.innerHTML = "✔ Low Risk (Safe)";
 result.className = "safe";
 
 }
-
 else{
 
 result.innerHTML = "❌ High Risk (Risky)";
 result.className = "risky";
 
-/* PLAY ALARM SOUND */
 document.getElementById("alarm").play();
 
 }
