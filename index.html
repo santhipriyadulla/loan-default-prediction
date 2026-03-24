@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Loan Risk Predictor</title>
 
-<!-- Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <style>
@@ -35,7 +34,7 @@ background:rgba(255,255,255,0.15);
 backdrop-filter:blur(15px);
 padding:30px;
 border-radius:20px;
-width:320px;
+width:330px;
 text-align:center;
 box-shadow:0 8px 32px rgba(0,0,0,0.3);
 color:white;
@@ -71,6 +70,15 @@ color:#555;
 border:none;
 outline:none;
 width:100%;
+}
+
+/* EXAMPLES */
+.examples{
+font-size:11px;
+color:#eee;
+margin-top:10px;
+text-align:left;
+line-height:1.5;
 }
 
 /* BUTTON */
@@ -161,7 +169,25 @@ margin:auto;
 
 <p id="result"></p>
 
+<!-- TEXTBOOK EXAMPLES -->
+<div class="examples">
+
+<b>Example Inputs:</b><br>
+
+Low Risk Example<br>
+Age: 35 | Income: 80000 | Loan: 15000 | Credit Score: 750<br><br>
+
+High Risk Example<br>
+Age: 22 | Income: 20000 | Loan: 40000 | Credit Score: 450
+
 </div>
+
+</div>
+
+<!-- ALARM SOUND -->
+<audio id="alarm">
+<source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+</audio>
 
 <script>
 
@@ -172,37 +198,58 @@ const result = document.getElementById("result");
 // Loader
 result.innerHTML = '<div class="loader"></div>';
 
+let age = document.getElementById("age").value;
+let income = document.getElementById("income").value;
+let loan = document.getElementById("loan").value;
+let score = document.getElementById("score").value;
+
+if(!age || !income || !loan || !score){
+result.innerHTML="Please enter all values";
+return;
+}
+
 let data = {
-age: Number(document.getElementById("age").value),
-income: Number(document.getElementById("income").value),
-loanamount: Number(document.getElementById("loan").value),
-creditscore: Number(document.getElementById("score").value)
+age:Number(age),
+income:Number(income),
+loanamount:Number(loan),
+creditscore:Number(score)
 };
 
 try {
 
-let response = await fetch("https://loan-api-fltv.onrender.com/predict", {
-method: "POST",
-headers: {
-"Content-Type": "application/json"
+let response = await fetch("https://loan-api-fltv.onrender.com/predict",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
 },
-body: JSON.stringify(data)
+body:JSON.stringify(data)
 });
 
 let res = await response.json();
 
-// RESULT DISPLAY
 if(res.prediction === 0){
+
 result.innerHTML = "✔ Low Risk (Safe)";
 result.className = "safe";
-}
-else{
-result.innerHTML = "❌ High Risk (Risky)";
-result.className = "risky";
+
 }
 
-} catch(error) {
-result.innerHTML = "Server Error";
+else{
+
+result.innerHTML = "❌ High Risk (Risky)";
+result.className = "risky";
+
+/* PLAY ALARM SOUND */
+document.getElementById("alarm").play();
+
+}
+
+}
+
+catch(error){
+
+result.innerHTML="Server Error";
+
 }
 
 }
