@@ -2,99 +2,99 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Loan Risk Predictor</title>
 
+<!-- FONT AWESOME -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <style>
-
-/* BACKGROUND */
+/* 🌈 BACKGROUND */
 body {
-margin:0;
-font-family:Poppins, sans-serif;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-
-background: linear-gradient(135deg,#667eea,#764ba2,#ff758c);
-background-size:300% 300%;
-animation:bg 10s infinite;
+    margin:0;
+    font-family:Poppins, sans-serif;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(-45deg, #ff6a00, #ee0979, #00c6ff, #0072ff);
+    background-size: 400% 400%;
+    animation: gradientMove 8s ease infinite;
 }
 
-@keyframes bg {
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+@keyframes gradientMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
 }
 
 /* CARD */
 .card {
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(15px);
-padding:30px;
-border-radius:20px;
-width:320px;
-text-align:center;
-box-shadow:0 8px 32px rgba(0,0,0,0.3);
-color:white;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
+    padding:30px;
+    border-radius:20px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 8px 32px rgba(0,0,0,0.3);
+    color:white;
 }
 
 /* INPUT */
 .input-group {
-text-align:left;
-margin-bottom:10px;
+    text-align:left;
+    margin-bottom:10px;
 }
 
 .input-group label {
-font-size:12px;
-color:#ddd;
-margin-left:5px;
+    font-size:12px;
+    color:#ddd;
+    margin-left:5px;
 }
 
 .input-box {
-display:flex;
-align-items:center;
-background:white;
-border-radius:10px;
-margin:5px 0;
-padding:10px;
+    display:flex;
+    align-items:center;
+    background:white;
+    border-radius:10px;
+    margin:5px 0;
+    padding:10px;
 }
 
 .input-box i {
-margin-right:10px;
-color:#555;
+    margin-right:10px;
+    color:#555;
 }
 
 .input-box input {
-border:none;
-outline:none;
-width:100%;
+    border:none;
+    outline:none;
+    width:100%;
 }
 
 /* BUTTON */
 button {
-width:100%;
-padding:12px;
-border:none;
-border-radius:12px;
-background:linear-gradient(45deg,#00c6ff,#0072ff);
-color:white;
-font-size:16px;
-cursor:pointer;
-transition:0.3s;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
 }
 
 button:hover {
-transform:scale(1.05);
-background:linear-gradient(45deg,#ff758c,#ff7eb3);
+    transform:scale(1.05);
+    background:linear-gradient(45deg,#ff758c,#ff7eb3);
 }
 
 /* RESULT */
 #result {
-margin-top:15px;
-font-size:18px;
-font-weight:bold;
+    margin-top:15px;
+    font-size:18px;
+    font-weight:bold;
 }
 
 .safe { color:#00ffcc; }
@@ -102,19 +102,18 @@ font-weight:bold;
 
 /* LOADER */
 .loader {
-border:4px solid #f3f3f3;
-border-top:4px solid #00c6ff;
-border-radius:50%;
-width:25px;
-height:25px;
-animation:spin 1s linear infinite;
-margin:auto;
+    border:4px solid #f3f3f3;
+    border-top:4px solid #00c6ff;
+    border-radius:50%;
+    width:25px;
+    height:25px;
+    animation:spin 1s linear infinite;
+    margin:auto;
 }
 
 @keyframes spin {
-100%{transform:rotate(360deg);}
+    100%{transform:rotate(360deg);}
 }
-
 </style>
 </head>
 
@@ -125,35 +124,35 @@ margin:auto;
 <h2>💳 Loan Risk Predictor</h2>
 
 <div class="input-group">
-<label>Age</label>
-<div class="input-box">
-<i class="fa fa-user"></i>
-<input id="age" type="number" placeholder="Example: 22">
-</div>
-</div>
-
-<div class="input-group">
-<label>Income</label>
-<div class="input-box">
-<i class="fa fa-dollar-sign"></i>
-<input id="income" type="number" placeholder="Example: 20000">
-</div>
+    <label>Age</label>
+    <div class="input-box">
+        <i class="fa fa-user"></i>
+        <input id="age" type="number" placeholder="Example: 22">
+    </div>
 </div>
 
 <div class="input-group">
-<label>Loan Amount</label>
-<div class="input-box">
-<i class="fa fa-money-bill"></i>
-<input id="loan" type="number" placeholder="Example: 40000">
-</div>
+    <label>Income</label>
+    <div class="input-box">
+        <i class="fa fa-dollar-sign"></i>
+        <input id="income" type="number" placeholder="Example: 20000">
+    </div>
 </div>
 
 <div class="input-group">
-<label>Credit Score</label>
-<div class="input-box">
-<i class="fa fa-chart-line"></i>
-<input id="score" type="number" placeholder="Example: 450">
+    <label>Loan Amount</label>
+    <div class="input-box">
+        <i class="fa fa-money-bill"></i>
+        <input id="loan" type="number" placeholder="Example: 40000">
+    </div>
 </div>
+
+<div class="input-group">
+    <label>Credit Score</label>
+    <div class="input-box">
+        <i class="fa fa-chart-line"></i>
+        <input id="score" type="number" placeholder="Example: 750">
+    </div>
 </div>
 
 <button onclick="predict()">Predict</button>
@@ -162,73 +161,83 @@ margin:auto;
 
 </div>
 
-<!-- ALARM SOUND -->
+<!-- 🔊 ALARM -->
 <audio id="alarm">
-<source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
 </audio>
 
 <script>
-
 async function predict() {
+    const result = document.getElementById("result");
+    result.innerHTML = '<div class="loader"></div>';
 
-const result = document.getElementById("result");
+    let age = document.getElementById("age").value;
+    let income = document.getElementById("income").value;
+    let loan = document.getElementById("loan").value;
+    let score = document.getElementById("score").value;
 
-result.innerHTML = '<div class="loader"></div>';
+    if(!age || !income || !loan || !score){
+        result.innerHTML="Please enter all values";
+        return;
+    }
 
-let age = document.getElementById("age").value;
-let income = document.getElementById("income").value;
-let loan = document.getElementById("loan").value;
-let score = document.getElementById("score").value;
+    age = Number(age);
+    income = Number(income);
+    loan = Number(loan);
+    score = Number(score);
 
-if(!age || !income || !loan || !score){
-result.innerHTML="Please enter all values";
-return;
+    // ✅ LOGIC
+    if(score >= 700){
+        result.innerHTML = "✔ Low Risk - Loan approval chances high";
+        result.className = "safe";
+        return;
+    }
+
+    if(score < 600){
+        result.innerHTML = "❌ High Risk - Loan may be rejected (Low Credit Score)";
+        result.className = "risky";
+
+        const alarm = document.getElementById("alarm");
+        alarm.currentTime = 0;
+        alarm.play().catch(() => {});
+        return;
+    }
+
+    // API for medium scores
+    let data = {
+        age: age,
+        income: income,
+        loanamount: loan,
+        creditscore: score
+    };
+
+    try {
+        let response = await fetch("https://loan-api-fltv.onrender.com/predict",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(data)
+        });
+
+        let res = await response.json();
+        console.log("API:", res);
+
+        if(res.prediction === 0 || res.prediction === "Low Risk"){
+            result.innerHTML = "✔ Low Risk - Loan approval chances high";
+            result.className = "safe";
+        }
+        else{
+            result.innerHTML = "❌ High Risk - Loan may be rejected";
+            result.className = "risky";
+
+            const alarm = document.getElementById("alarm");
+            alarm.currentTime = 0;
+            alarm.play().catch(() => {});
+        }
+
+    } catch(error){
+        result.innerHTML="Server Error";
+    }
 }
-
-let data = {
-age:Number(age),
-income:Number(income),
-loanamount:Number(loan),
-creditscore:Number(score)
-};
-
-try {
-
-let response = await fetch("https://loan-api-fltv.onrender.com/predict",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(data)
-});
-
-let res = await response.json();
-
-if(res.prediction === 0){
-
-result.innerHTML = "✔ Low Risk (Safe)";
-result.className = "safe";
-
-}
-else{
-
-result.innerHTML = "❌ High Risk (Risky)";
-result.className = "risky";
-
-document.getElementById("alarm").play();
-
-}
-
-}
-
-catch(error){
-
-result.innerHTML="Server Error";
-
-}
-
-}
-
 </script>
 
 </body>
