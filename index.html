@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Loan Risk Predictor</title>
 
-<!-- FONT AWESOME -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <style>
-/* 🌈 BACKGROUND */
 body {
     margin:0;
     font-family:Poppins, sans-serif;
@@ -28,7 +26,6 @@ body {
     100% {background-position: 0% 50%;}
 }
 
-/* CARD */
 .card {
     background:rgba(255,255,255,0.15);
     backdrop-filter:blur(15px);
@@ -40,7 +37,6 @@ body {
     color:white;
 }
 
-/* INPUT */
 .input-group {
     text-align:left;
     margin-bottom:10px;
@@ -72,7 +68,6 @@ body {
     width:100%;
 }
 
-/* BUTTON */
 button {
     width:100%;
     padding:12px;
@@ -90,7 +85,6 @@ button:hover {
     background:linear-gradient(45deg,#ff758c,#ff7eb3);
 }
 
-/* RESULT */
 #result {
     margin-top:15px;
     font-size:18px;
@@ -100,7 +94,6 @@ button:hover {
 .safe { color:#00ffcc; }
 .risky { color:#ff4d4d; }
 
-/* LOADER */
 .loader {
     border:4px solid #f3f3f3;
     border-top:4px solid #00c6ff;
@@ -124,35 +117,35 @@ button:hover {
 <h2>💳 Loan Risk Predictor</h2>
 
 <div class="input-group">
-    <label>Age</label>
-    <div class="input-box">
-        <i class="fa fa-user"></i>
-        <input id="age" type="number" placeholder="Example: 22">
-    </div>
+<label>Age</label>
+<div class="input-box">
+<i class="fa fa-user"></i>
+<input id="age" type="number" placeholder="Example: 22">
+</div>
 </div>
 
 <div class="input-group">
-    <label>Income</label>
-    <div class="input-box">
-        <i class="fa fa-dollar-sign"></i>
-        <input id="income" type="number" placeholder="Example: 20000">
-    </div>
+<label>Income</label>
+<div class="input-box">
+<i class="fa fa-dollar-sign"></i>
+<input id="income" type="number" placeholder="Example: 20000">
+</div>
 </div>
 
 <div class="input-group">
-    <label>Loan Amount</label>
-    <div class="input-box">
-        <i class="fa fa-money-bill"></i>
-        <input id="loan" type="number" placeholder="Example: 40000">
-    </div>
+<label>Loan Amount</label>
+<div class="input-box">
+<i class="fa fa-money-bill"></i>
+<input id="loan" type="number" placeholder="Example: 40000">
+</div>
 </div>
 
 <div class="input-group">
-    <label>Credit Score</label>
-    <div class="input-box">
-        <i class="fa fa-chart-line"></i>
-        <input id="score" type="number" placeholder="Example: 250">
-    </div>
+<label>Credit Score</label>
+<div class="input-box">
+<i class="fa fa-chart-line"></i>
+<input id="score" type="number" placeholder="Example: 250">
+</div>
 </div>
 
 <button onclick="predict()">Predict</button>
@@ -161,13 +154,13 @@ button:hover {
 
 </div>
 
-<!-- 🔊 ALARM -->
 <audio id="alarm">
-    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+<source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
 </audio>
 
 <script>
 async function predict() {
+
     const result = document.getElementById("result");
     result.innerHTML = '<div class="loader"></div>';
 
@@ -186,7 +179,18 @@ async function predict() {
     loan = Number(loan);
     score = Number(score);
 
-    // ✅ LOGIC
+    // ✅ NEW CONDITION (Age Check)
+    if(age < 18){
+        result.innerHTML = "❌ Not Eligible (Age must be 18 or above)";
+        result.className = "risky";
+
+        const alarm = document.getElementById("alarm");
+        alarm.currentTime = 0;
+        alarm.play().catch(() => {});
+        return;
+    }
+
+    // ✅ EXISTING LOGIC
     if(score >= 700){
         result.innerHTML = "✔ Low Risk - Loan approval chances high";
         result.className = "safe";
@@ -203,7 +207,7 @@ async function predict() {
         return;
     }
 
-    // API for medium scores
+    // API call
     let data = {
         age: age,
         income: income,
@@ -219,7 +223,6 @@ async function predict() {
         });
 
         let res = await response.json();
-        console.log("API:", res);
 
         if(res.prediction === 0 || res.prediction === "Low Risk"){
             result.innerHTML = "✔ Low Risk - Loan approval chances high";
